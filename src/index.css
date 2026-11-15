@@ -1,0 +1,173 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --color-primary: #477bff;
+  /* Slightly deeper shade used for filled buttons and link text so white/blue text meets WCAG AA. */
+  --color-primary-strong: #2f62eb;
+  --color-primary-hover: #2554d6;
+  --color-primary-fill: #2f62eb;
+  --color-primary-50: #f0f4ff;
+  --color-primary-100: #e1e9ff;
+  --color-primary-200: #c5d5ff;
+
+  --color-canvas: #f5f7fc;
+  --color-surface: #ffffff;
+  --color-ink: #151923;
+  --color-muted: #687386;
+  --color-subtle: #98a2b3;
+  --color-line: #e6eaf1;
+  --color-line-strong: #d3d9e4;
+  --color-line-hover: #bfc7d4;
+  --color-soft: #f3f5f9;
+  --color-soft-2: #eef1f6;
+  --color-sunken: #f8f9fc;
+  --color-toggle-off: #d0d6e0;
+  --color-info-ink: #1f3f8f;
+  --color-warning-line: #fedf89;
+  --color-danger-line: #fecdca;
+  --color-success-line: #abefc6;
+
+  --color-danger: #d92d20;
+  --color-danger-50: #fef3f2;
+  --color-success: #067647;
+  --color-success-50: #ecfdf3;
+  --color-warning: #b54708;
+  --color-warning-50: #fffaeb;
+
+  --shadow-card: 0 1px 2px rgba(21, 25, 35, 0.04), 0 1px 3px rgba(21, 25, 35, 0.04);
+  --shadow-raised: 0 4px 16px rgba(21, 25, 35, 0.06), 0 1px 3px rgba(21, 25, 35, 0.05);
+  --shadow-pop: 0 12px 32px rgba(21, 25, 35, 0.12), 0 2px 6px rgba(21, 25, 35, 0.06);
+}
+
+/* Dark theme: same tokens, different values. Toggled by the .dark class on <html>. */
+.dark {
+  color-scheme: dark;
+  --color-primary-strong: #7da2ff;
+  --color-primary-hover: #3f70f0;
+  --color-primary-50: #172342;
+  --color-primary-100: #1e2d55;
+  --color-primary-200: #2c4580;
+  --color-canvas: #0e1117;
+  --color-surface: #161a22;
+  --color-ink: #e7ebf2;
+  --color-muted: #9ba5b6;
+  --color-subtle: #6f798a;
+  --color-line: #262c38;
+  --color-line-strong: #343c4b;
+  --color-line-hover: #4a5468;
+  --color-soft: #1d222c;
+  --color-soft-2: #232937;
+  --color-sunken: #12161d;
+  --color-toggle-off: #3a4252;
+  --color-info-ink: #a9c1ff;
+  --color-danger: #f97066;
+  --color-danger-50: #2b1517;
+  --color-danger-line: #5c2a2a;
+  --color-success: #47cd89;
+  --color-success-50: #11291d;
+  --color-success-line: #1e5a3b;
+  --color-warning: #fdb022;
+  --color-warning-50: #2a2111;
+  --color-warning-line: #5a4416;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-raised: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow-pop: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  button,
+  [role='button'],
+  label[for] {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+  input[type='color'] {
+    -webkit-appearance: none;
+    appearance: none;
+    padding: 0;
+    border: none;
+    background: none;
+  }
+  input[type='color']::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+  input[type='color']::-webkit-color-swatch {
+    border: none;
+    border-radius: 6px;
+  }
+  input[type='color']::-moz-color-swatch {
+    border: none;
+    border-radius: 6px;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8;
+  }
+  .card {
+    @apply rounded-xl border border-line bg-surface shadow-card;
+  }
+  .input {
+    @apply block w-full rounded-lg border border-line-strong bg-surface px-3 py-2.5 text-[15px] text-ink placeholder:text-subtle transition-colors outline-none sm:text-sm;
+  }
+  .input:hover {
+    @apply border-line-hover;
+  }
+  .input:focus {
+    @apply border-primary ring-3 ring-primary-100;
+  }
+  .input[aria-invalid='true'] {
+    @apply border-danger;
+  }
+  .input[aria-invalid='true']:focus {
+    @apply ring-danger-50;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-ink;
+  }
+  .help {
+    @apply mt-1.5 text-[13px] text-muted;
+  }
+  .error-text {
+    @apply mt-1.5 text-[13px] text-danger;
+  }
+  .skeleton {
+    @apply animate-pulse rounded-md bg-soft-2;
+  }
+}
+
+/* QR preview: the library renders an <svg>/<canvas> with fixed width; make it fluid. */
+.qr-render svg,
+.qr-render canvas {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
